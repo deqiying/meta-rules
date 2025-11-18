@@ -42,6 +42,21 @@ jobs:
             echo "Warning: sing-box binary not found at $SING_BOX (will fail on compile step if missing)"
           fi
 
+      - name: Show sing-box version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -x "$SING_BOX" ]]; then
+            echo "sing-box path: $SING_BOX"
+            # Try both commands; some builds support only one
+            if ! "$SING_BOX" version 2>/dev/null && ! "$SING_BOX" --version 2>/dev/null; then
+              echo "Note: 'sing-box version' output not available; continuing."
+            fi
+          else
+            echo "Error: sing-box binary is not executable or missing at $SING_BOX"
+            exit 1
+          fi
+
       - name: Compute changed JSON files since last tag
         id: diff_json
         shell: bash
@@ -130,7 +145,9 @@ jobs:
               continue
             fi
             echo "Compiling: $jsonFile"
-            "$SING_BOX" rule-set compile "$jsonFile"
+            # Explicitly set output path to ensure .srs is written alongside the JSON
+            outFile="${jsonFile%.json}.srs"
+            "$SING_BOX" rule-set compile -o "$outFile" "$jsonFile"
           done < "$JSON_LIST_FILE"
 
       - name: List compiled srs files and count
@@ -183,8 +200,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage all changed .srs files
-          git add "*.srs" geo/**/*.srs custom/**/*.srs || true
+          # Stage only the compiled .srs files listed by previous step to avoid pathspec errors
+          SRS_LIST_FILE="${{ steps.list_srs.outputs.srs_list_file }}"
+          if [[ -n "${SRS_LIST_FILE}" && -f "${SRS_LIST_FILE}" && -s "${SRS_LIST_FILE}" ]]; then
+            echo "Staging files from $SRS_LIST_FILE:"
+            cat "$SRS_LIST_FILE" || true
+            # Use pathspec-from-file to add exact files
+            git add --pathspec-from-file="$SRS_LIST_FILE" --
+          else
+            echo "No .srs files to stage."
+          fi
 
           # If no changes, exit quietly
           if git diff --cached --quiet; then
