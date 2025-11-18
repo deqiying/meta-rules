@@ -218,7 +218,7 @@ jobs:
           fi
 
           # Commit with fixed message
-          git commit -m "auto workflows"
+          git commit -m "auto workflows compile"
 
           # Create/force-lightweight tag 'auto' on this commit
           git tag -f "auto"
