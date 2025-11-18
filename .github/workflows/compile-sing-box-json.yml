@@ -1,0 +1,128 @@
+name: Compile sing-box JSON rules
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  compile-json:
+    name: Compile changed JSON rule-sets
+    runs-on: ubuntu-latest
+    env:
+      SING_BOX: ./bin/sing-box
+      DEFAULT_BRANCH: main
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need full history & tags for diff
+
+      - name: Ensure this is a plain push (no tag)
+        run: |
+          # GitHub sets GITHUB_REF to refs/heads/* for branch pushes
+          # and refs/tags/* for tag pushes. We only want branch pushes.
+          echo "GITHUB_REF=$GITHUB_REF"
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "This is a tag push; skipping workflow as per requirement.";
+            exit 0;
+          fi
+
+      - name: Check sing-box binary exists
+        run: |
+          if [[ ! -x "$SING_BOX" ]]; then
+            echo "sing-box binary not found or not executable at: $SING_BOX";
+            ls -R
+            exit 1
+          fi
+
+      - name: Compute changed JSON files since last tag
+        id: diff_json
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch --tags --force
+
+          JSON_LIST_FILE="json_list.txt"
+          : > "$JSON_LIST_FILE"
+
+          echo "Finding latest tag (if any)..."
+          if git describe --tags --abbrev=0 --match '*' >/dev/null 2>&1; then
+            last_tag=$(git describe --tags --abbrev=0 --match '*')
+            echo "Last tag: $last_tag"
+
+            last_tag_commit=$(git rev-list -n 1 "$last_tag")
+            echo "Last tag commit: $last_tag_commit"
+
+            # Check whether last_tag is an ancestor of current HEAD on main
+            merge_base=$(git merge-base "${DEFAULT_BRANCH}" "$last_tag_commit" || true)
+            echo "Merge base between $DEFAULT_BRANCH and $last_tag: $merge_base"
+
+            if [[ -n "$merge_base" && "$merge_base" == "$last_tag_commit" ]]; then
+              echo "Tag is on $DEFAULT_BRANCH ancestry; using range last_tag..HEAD"
+              RANGE="$last_tag_commit..$GITHUB_SHA"
+            else
+              echo "Tag is not on $DEFAULT_BRANCH ancestry; using push range before..sha"
+              if [[ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" && -n "${GITHUB_EVENT_BEFORE:-}" ]]; then
+                RANGE="$GITHUB_EVENT_BEFORE..$GITHUB_SHA"
+              else
+                echo "No valid before SHA (likely first push); using all tracked JSON files"
+                RANGE=""
+              fi
+            fi
+          else
+            echo "No tags found; falling back to push range before..sha or all JSON files."
+            if [[ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" && -n "${GITHUB_EVENT_BEFORE:-}" ]]; then
+              RANGE="$GITHUB_EVENT_BEFORE..$GITHUB_SHA"
+            else
+              echo "No valid before SHA (likely first push); using all tracked JSON files"
+              RANGE=""
+            fi
+          fi
+
+          echo "Using range: ${RANGE:-<none, using ls-files>}"
+
+          if [[ -n "${RANGE}" ]]; then
+            git diff --name-only "$RANGE" \
+              | grep '\.json$' \
+              | sort -u \
+              > "$JSON_LIST_FILE" || true
+          else
+            # No meaningful range (e.g., first push), treat all tracked JSON as changed
+            git ls-files '*.json' | sort -u > "$JSON_LIST_FILE" || true
+          fi
+
+          echo "Changed JSON files:";
+          cat "$JSON_LIST_FILE" || echo "<none>"
+
+          echo "json_list_file=$JSON_LIST_FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Compile changed JSON files with sing-box
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          JSON_LIST_FILE="${{ steps.diff_json.outputs.json_list_file }}"
+
+          if [[ ! -f "$JSON_LIST_FILE" ]]; then
+            echo "JSON list file not found; nothing to compile."
+            exit 0
+          fi
+
+          if [[ ! -s "$JSON_LIST_FILE" ]]; then
+            echo "No changed JSON files detected; skipping compilation."
+            exit 0
+          fi
+
+          echo "Compiling JSON files listed in $JSON_LIST_FILE..."
+          while IFS= read -r jsonFile; do
+            [[ -z "$jsonFile" ]] && continue
+            if [[ ! -f "$jsonFile" ]]; then
+              echo "Warning: listed JSON file does not exist: $jsonFile" >&2
+              continue
+            fi
+            echo "Compiling: $jsonFile"
+            "$SING_BOX" rule-set compile "$jsonFile"
+          done < "$JSON_LIST_FILE"
