@@ -214,8 +214,33 @@ jobs:
           # 提交生成的 .srs 文件，并打上 auto 标签推送回 main
           set -euo pipefail
 
-          # 配置工作流提交使用的身份
+          # 配置工作流提交使用的身份（GitHub Actions 机器人账号）
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 仅根据上一
+          # 仅根据上一步骤生成的 .srs 列表进行 git add，避免 pathspec 匹配不到时报错
+          SRS_LIST_FILE="${{ steps.list_srs.outputs.srs_list_file }}"
+          if [[ -n "${SRS_LIST_FILE}" && -f "${SRS_LIST_FILE}" && -s "${SRS_LIST_FILE}" ]]; then
+            echo "Staging files from $SRS_LIST_FILE:"
+            cat "$SRS_LIST_FILE" || true
+            # 使用 pathspec-from-file，精确添加列表中的文件
+            git add --pathspec-from-file="$SRS_LIST_FILE" --
+          else
+            echo "No .srs files to stage."
+          fi
+
+          # 如果暂存区没有任何变化，则不提交也不打标签，静默退出
+          if git diff --cached --quiet; then
+            echo "No .srs changes to commit; skipping commit and tag."
+            exit 0
+          fi
+
+          # 有变化时，提交 .srs 文件，提交信息固定为 auto workflows compile
+          git commit -m "auto workflows compile"
+
+          # 创建/强制更新名为 auto 的 lightweight tag，指向当前提交
+          git tag -f "auto"
+
+          # 将提交推送到默认分支（main），并强制推送 auto 标签
+          git push origin "${DEFAULT_BRANCH}"
+          git push origin "auto" --force
