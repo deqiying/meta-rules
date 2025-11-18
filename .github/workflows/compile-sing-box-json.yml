@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # allow the workflow to push commits and tags back to the repo
+
 jobs:
   compile-json:
     name: Compile changed JSON rule-sets
