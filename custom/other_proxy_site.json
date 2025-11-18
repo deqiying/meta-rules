@@ -55,11 +55,12 @@
         "nodejs.org",
         "openupm.com",
         "proxmox.com",
+        "res.cloudinary.com",
+        "ssl.domain.separator",
         "talkatone.com",
         "tktn.at",
         "tktn.be",
         "talkatone.domain.separator",
-        "ssl.domain.separator",
         "digicert.com",
         "ssl.domain.separator"
       ],
