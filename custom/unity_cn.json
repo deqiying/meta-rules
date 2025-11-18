@@ -1,0 +1,18 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "upm-cdn-china.unitychina.cn",
+        "docs.unity.cn",
+        "id.unity.cn"
+      ],
+      "domain_suffix": [
+        "unity.cn",
+        "unitychina.cn",
+        "unity3d.cn",
+        "unity3dcloud.cn"
+      ]
+    }
+  ]
+}

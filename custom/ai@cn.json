@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "rules": [
+    {
+      "domain": [
+        "chatglm.cn",
+        "glm.chat",
+        "spark-api.xf-yun.com",
+        "spark-api.cn",
+        "tongyi.aliyun.com",
+        "dashscope.aliyun.com",
+        "bailian.aliyun.com"
+      ],
+      "domain_suffix": [
+        ".100tal.com",
+        ".baichuan-ai.com",
+        ".bailian.aliyun.com",
+        ".chatglm.cn",
+        ".coze.cn",
+        ".coze.com",
+        ".dashscope.aliyun.com",
+        ".doubao.com",
+        ".feishu.cn",
+        ".glm.chat",
+        ".hunyuan.tencent.com",
+        ".kimi.ai",
+        ".larkoffice.com",
+        ".minimax.chat",
+        ".modelbest.cn",
+        ".moonshot.cn",
+        ".qwen.ai",
+        ".sensechat.cn",
+        ".sensenova.cn",
+        ".stepfun.com",
+        ".tongyi.aliyun.com",
+        ".tongyi.com",
+        ".volcengine.com",
+        ".wenxin.baidu.com",
+        ".yiyan.baidu.com",
+        ".yi.tech",
+        ".zhipuai.cn",
+        "app.coze.cn",
+        "chat.deepseek.com",
+        "chatmoonshot.cn",
+        "console.coze.cn",
+        "ernie.baidu.com",
+        "platform.moonshot.cn",
+        "qianfan.baidu.com"
+      ]
+    }
+  ]
+}

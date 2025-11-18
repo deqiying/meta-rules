@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "reddit.com"
+      ],
+      "domain_suffix": [
+        "redd.it",
+        "redditlist.com",
+        "redditmedia.com",
+        "redditspace.com",
+        "redditstatic.com",
+        "reddit.com"
+      ],
+      "domain_keyword": [
+        "reddit.com"
+      ]
+    }
+  ]
+}

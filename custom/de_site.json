@@ -1,0 +1,18 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "adgh.mjbbs.com",
+        "vault.deqiying.com",
+        "deqiying.com"
+      ],
+      "domain_suffix": [
+        "deqiying.com",
+        "free2net.xyz",
+        "issueseek.com",
+        "mjbbs.com"
+      ]
+    }
+  ]
+}

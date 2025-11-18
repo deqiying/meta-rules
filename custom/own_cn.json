@@ -1,0 +1,72 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "alibabachengdun.com",
+        "aocde.com",
+        "dcloudstc.com",
+        "dutils.com",
+        "gov.cn",
+        "hnzkclouds.com",
+        "htool.com",
+        "ietheivaicai.com",
+        "imtmp.net",
+        "mijia.com",
+        "mijia.tech",
+        "officeppe.com",
+        "sealaly.net",
+        "tec73.com",
+        "todesk.com",
+        "weixin.com",
+        "xiaomixiaoai.com"
+      ],
+      "domain_suffix": [
+        "acwifi.net",
+        "amazonaws.cn",
+        "amazon.cn",
+        "aocde.com",
+        "bytecdntp.com",
+        "bytemastatic.com",
+        "bosszhipin.com",
+        "cn.cravatar.com",
+        "dcloudstc.com",
+        "dewucdn.com",
+        "effirst.com",
+        "gov.cn",
+        "hnzkclouds.com",
+        "idevbase.com",
+        "ietheivaicai.com",
+        "ipchaxun.com",
+        "kuaishouzt.com",
+        "lizhi.shop",
+        "mianshiya.com",
+        "mao.fan",
+        "mijia.com",
+        "mijia.tech",
+        "miot-spec.org",
+        "oceanengine.com",
+        "open-douyin.comm",
+        "pokopoko.cn",
+        "pokopoko.com.cn",
+        "pokopoko.net",
+        "pokopoko.fun",
+        "right.com.cn",
+        "sanguosha.cn",
+        "sealaly.net",
+        "tec73.com",
+        "todesk.com",
+        "toutiao1.com",
+        "trae.com",
+        "trae.com.cn",
+        "weixin.com",
+        "xiaomixiaoai.com"
+      ],
+      "domain_keyword": [
+        "hnzkclouds",
+        "ietheivaicai",
+        "xiaomixiaoai"
+      ]
+    }
+  ]
+}

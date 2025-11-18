@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "datastory.com.cn",
+        "datatub.com",
+        "ds-int.cn"
+      ],
+      "domain_suffix": [
+        "datastory.com.cn",
+        "datatub.com",
+        "mysql8.proxy.hdp",
+        "ds-int.cn"
+      ],
+      "domain_keyword": [
+        "wiki.ds-int",
+        "datastory",
+        "ds-int"
+      ],
+      "domain_regex": [
+        "hdp\\d+-\\d+",
+        "fs-auto-vm-kafka\\d+",
+        "wiki.ds-int",
+        "ds-int"
+      ]
+    }
+  ]
+}

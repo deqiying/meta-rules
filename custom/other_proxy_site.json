@@ -1,0 +1,71 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "talkatone.domain.separator",
+        "talkatone.com",
+        "tktn.at",
+        "tktn.be",
+        "talkatone.domain.separator",
+        "other.domain.separator",
+        "random.du0.org",
+        "other.domain.separator"
+      ],
+      "domain_suffix": [
+        "other.domain.separator",
+        "adjust.com",
+        "adyen.com",
+        "darkreader.org",
+        "debian.org",
+        "ziffstatic.com",
+        "esm.sh",
+        "freedownloadmanager.org",
+        "huggingface.co",
+        "hotreload.net",
+        "internetdownloadmanager.com",
+        "img.shields.io",
+        "immersivetranslate.com",
+        "immersivetranslate.cn",
+        "iplark.com",
+        "iwooji.com",
+        "yeqing.net",
+        "du0.org",
+        "nodeimage.com",
+        "nodequality.com",
+        "redfish.host",
+        "skyimg.net",
+        "thunderbird.net",
+        "unityhotreload.com",
+        "wethrift.com",
+        "winstall.app",
+        "other.domain.separator",
+        "talkatone.domain.separator",
+        "agkn.com",
+        "cohere.com",
+        "crashlytics.com",
+        "flaticon.com",
+        "inmobi.com",
+        "ipapi.is",
+        "ipwho.is",
+        "ip-api.com",
+        "ip.sb",
+        "kochava.com",
+        "mobilefuse.com",
+        "openupm.com",
+        "proxmox.com",
+        "talkatone.com",
+        "tktn.at",
+        "tktn.be",
+        "talkatone.domain.separator",
+        "ssl.domain.separator",
+        "digicert.com",
+        "ssl.domain.separator"
+      ],
+      "domain_keyword": [
+        "talkatone.domain.separator",
+        "talkatone.domain.separator"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "live-platform-api.prd.ld.unity3d.com",
+        "api.hub-proxy.unity3d.com",
+        "core.hub-proxy.unity3d.com",
+        "config.hub-proxy.unity3d.com",
+        "config.uca.cloud.unity3d.com",
+        "api2.amplitude.com",
+        "public-cdn.cloud.unity3d.com",
+        "id.unity.com",
+        "accounts.unity3d.com",
+        "license.unity3d.com",
+        "activation.unity3d.com",
+        "private.download.packages.unity.com",
+        "kharma.unity3d.com",
+        "dashboard.unityads.unity3d.com",
+        "download.unity3d.com"
+      ],
+      "domain_suffix": [
+        "unity.com",
+        "unity3d.com",
+        "plasticscm.com",
+        "unityhub.com",
+        "unityeditor.com",
+        "unitypackage.com",
+        "google-analytics.com",
+        "amplitude.com",
+        "cloud.unity3d.com",
+        "packages.unity.com",
+        "download.packages.unity.com",
+        "packages-v2.unity.com",
+        "cdn.packages.unity.com",
+        "core.cloud.unity3d.com",
+        "developer.cloud.unity3d.com",
+        "perf.cloud.unity3d.com",
+        "perf-events.cloud.unity3d.com",
+        "cdp.cloud.unity3d.com",
+        "assetstore.unity.com",
+        "learn.unity.com"
+      ]
+    }
+  ]
+}
