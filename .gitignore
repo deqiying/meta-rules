@@ -1,0 +1,109 @@
+# Root .gitignore for JetBrains / multi-language project
+# Adjust per language as the project grows.
+
+############################
+# JetBrains / IntelliJ IDEA
+############################
+# Ignore workspace-specific and local settings
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/httpRequests
+.idea/**/dataSources/
+.idea/**/dataSources.local.xml
+.idea/**/libraries
+
+# Optionally ignore whole .idea if you don't want to share IDE config
+# (Uncomment the next line if you prefer that policy.)
+# .idea/
+
+# Allow module files and shared code style / inspections to be committed
+!*.iml
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+############################
+# OS-specific junk
+############################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+############################
+# Editors / tools
+############################
+*~
+*.swp
+*.swo
+
+############################
+# Java / Kotlin (if used)
+############################
+*.class
+*.log
+
+# Build output
+/out/
+/build/
+/target/
+
+# Gradle
+.gradle/
+buildSrc/.gradle/
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+############################
+# Node / JavaScript (if used)
+############################
+node_modules/
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log*
+
+# Common JS/TS build artifacts
+/dist/
+/coverage/
+.nyc_output/
+.turbo/
+
+############################
+# Python (if used)
+############################
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+############################
+# Logs / temp
+############################
+logs/
+log/
+*.tmp
+*.temp
+/tmp/
+
