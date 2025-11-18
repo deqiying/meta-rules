@@ -30,6 +30,15 @@ jobs:
             exit 0;
           fi
 
+      - name: Make sing-box executable
+        shell: bash
+        run: |
+          if [[ -f "$SING_BOX" ]]; then
+            chmod +x "$SING_BOX"
+          else
+            echo "Warning: sing-box binary not found at $SING_BOX (will fail on compile step if missing)"
+          fi
+
       - name: Compute changed JSON files since last tag
         id: diff_json
         shell: bash
