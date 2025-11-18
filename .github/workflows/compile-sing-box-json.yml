@@ -102,6 +102,7 @@ jobs:
           echo "json_list_file=$JSON_LIST_FILE" >> "$GITHUB_OUTPUT"
 
       - name: Compile changed JSON files with sing-box
+        id: compile_json
         shell: bash
         run: |
           set -euo pipefail
@@ -128,3 +129,34 @@ jobs:
             echo "Compiling: $jsonFile"
             "$SING_BOX" rule-set compile "$jsonFile"
           done < "$JSON_LIST_FILE"
+
+      - name: Commit and tag generated srs files
+        if: success()
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # Configure git identity for the workflow
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage all changed .srs files
+          git add "*.srs" geo/**/*.srs custom/**/*.srs || true
+
+          # If no changes, exit quietly
+          if git diff --cached --quiet; then
+            echo "No .srs changes to commit; skipping commit and tag."
+            exit 0
+          fi
+
+          # Commit with fixed message
+          git commit -m "auto workflows"
+
+          # Create/force-lightweight tag 'auto' on this commit
+          git tag -f "auto"
+
+          # Push commit and tag back to origin main
+          git push origin "${DEFAULT_BRANCH}"
+          git push origin "auto" --force
