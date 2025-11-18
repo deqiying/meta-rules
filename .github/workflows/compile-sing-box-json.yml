@@ -3,30 +3,32 @@ name: Compile sing-box JSON rules
 on:
   push:
     branches:
-      - main
+      - main  # 仅在 main 分支有 push 时触发
 
 permissions:
-  contents: write  # allow the workflow to push commits and tags back to the repo
+  contents: write  # 允许工作流向仓库推送提交和标签
 
 jobs:
   compile-json:
     name: Compile changed JSON rule-sets
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 使用 GitHub 托管的 Linux (amd64) 环境
     env:
       # sing-box 可执行文件路径（在仓库 bin 目录下）
       SING_BOX: ./bin/sing-box
+      # 默认分支名，用于推送提交
       DEFAULT_BRANCH: main
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # need full history & tags for diff
+          fetch-depth: 0  # 拉取完整历史（包括 tag），便于做 diff 和查找标签
 
       - name: Ensure this is a plain push (no tag)
+        # 确保当前触发是普通分支 push，而不是 tag push；如果是 tag push 则直接退出
         run: |
-          # GitHub sets GITHUB_REF to refs/heads/* for branch pushes
-          # and refs/tags/* for tag pushes. We only want branch pushes.
+          # GitHub 将分支 push 设置为 refs/heads/*，tag push 为 refs/tags/*
+          # 我们只在分支 push 时执行工作流
           echo "GITHUB_REF=$GITHUB_REF"
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             echo "This is a tag push; skipping workflow as per requirement.";
@@ -36,6 +38,7 @@ jobs:
       - name: Make sing-box executable
         shell: bash
         run: |
+          # 确保 sing-box 二进制具有可执行权限
           if [[ -f "$SING_BOX" ]]; then
             chmod +x "$SING_BOX"
           else
@@ -45,10 +48,11 @@ jobs:
       - name: Show sing-box version
         shell: bash
         run: |
+          # 打印 sing-box 版本信息，便于排查问题
           set -euo pipefail
           if [[ -x "$SING_BOX" ]]; then
             echo "sing-box path: $SING_BOX"
-            # Try both commands; some builds support only one
+            # 尝试两个常见的版本命令，有些构建只支持其中一个
             if ! "$SING_BOX" version 2>/dev/null && ! "$SING_BOX" --version 2>/dev/null; then
               echo "Note: 'sing-box version' output not available; continuing."
             fi
@@ -61,38 +65,45 @@ jobs:
         id: diff_json
         shell: bash
         run: |
+          # 计算自上一次 tag 以来发生变化的 JSON 文件列表
           set -euo pipefail
 
+          # 拉取最新标签，确保本地包含所有 tag 信息
           git fetch --tags --force
 
           JSON_LIST_FILE="json_list.txt"
-          : > "$JSON_LIST_FILE"
+          : > "$JSON_LIST_FILE"  # 清空/创建 JSON 列表文件
 
           echo "Finding latest tag (if any)..."
           if git describe --tags --abbrev=0 --match '*' >/dev/null 2>&1; then
+            # 找到最近的一个 tag
             last_tag=$(git describe --tags --abbrev=0 --match '*')
             echo "Last tag: $last_tag"
 
             last_tag_commit=$(git rev-list -n 1 "$last_tag")
             echo "Last tag commit: $last_tag_commit"
 
-            # Check whether last_tag is an ancestor of current HEAD on main
+            # 检查 last_tag 对应的提交是否在 DEFAULT_BRANCH（main）的祖先链上
             merge_base=$(git merge-base "${DEFAULT_BRANCH}" "$last_tag_commit" || true)
             echo "Merge base between $DEFAULT_BRANCH and $last_tag: $merge_base"
 
             if [[ -n "$merge_base" && "$merge_base" == "$last_tag_commit" ]]; then
+              # tag 在 main 分支的历史上，使用 last_tag_commit..当前提交 范围
               echo "Tag is on $DEFAULT_BRANCH ancestry; using range last_tag..HEAD"
               RANGE="$last_tag_commit..$GITHUB_SHA"
             else
+              # tag 不在 main 的祖先链上，回退到本次 push 的 before..after 范围
               echo "Tag is not on $DEFAULT_BRANCH ancestry; using push range before..sha"
               if [[ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" && -n "${GITHUB_EVENT_BEFORE:-}" ]]; then
                 RANGE="$GITHUB_EVENT_BEFORE..$GITHUB_SHA"
               else
+                # before 为全 0，说明是第一次 push，后面统一视为“所有 JSON 有变化”
                 echo "No valid before SHA (likely first push); using all tracked JSON files"
                 RANGE=""
               fi
             fi
           else
+            # 仓库中不存在任何 tag 时的处理逻辑
             echo "No tags found; falling back to push range before..sha or all JSON files."
             if [[ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" && -n "${GITHUB_EVENT_BEFORE:-}" ]]; then
               RANGE="$GITHUB_EVENT_BEFORE..$GITHUB_SHA"
@@ -105,24 +116,27 @@ jobs:
           echo "Using range: ${RANGE:-<none, using ls-files>}"
 
           if [[ -n "${RANGE}" ]]; then
+            # 对指定范围做 diff，筛选出扩展名为 .json 的文件
             git diff --name-only "$RANGE" \
               | grep '\.json$' \
               | sort -u \
               > "$JSON_LIST_FILE" || true
           else
-            # No meaningful range (e.g., first push), treat all tracked JSON as changed
+            # 没有有效范围（例如第一次 push），则认为所有已跟踪 JSON 都是“变更”
             git ls-files '*.json' | sort -u > "$JSON_LIST_FILE" || true
           fi
 
           echo "Changed JSON files:";
           cat "$JSON_LIST_FILE" || echo "<none>"
 
+          # 将 JSON 列表文件路径作为输出，供后续步骤使用
           echo "json_list_file=$JSON_LIST_FILE" >> "$GITHUB_OUTPUT"
 
       - name: Compile changed JSON files with sing-box
         id: compile_json
         shell: bash
         run: |
+          # 遍历 JSON 列表，逐个使用 sing-box 编译为同路径下的 .srs 文件
           set -euo pipefail
 
           JSON_LIST_FILE="${{ steps.diff_json.outputs.json_list_file }}"
@@ -141,11 +155,12 @@ jobs:
           while IFS= read -r jsonFile; do
             [[ -z "$jsonFile" ]] && continue
             if [[ ! -f "$jsonFile" ]]; then
+              # 理论上不应该发生，如果发生说明历史中有删除/重命名
               echo "Warning: listed JSON file does not exist: $jsonFile" >&2
               continue
             fi
             echo "Compiling: $jsonFile"
-            # Explicitly set output path to ensure .srs is written alongside the JSON
+            # 显式指定输出路径：与 JSON 同目录，扩展名改为 .srs
             outFile="${jsonFile%.json}.srs"
             "$SING_BOX" rule-set compile -o "$outFile" "$jsonFile"
           done < "$JSON_LIST_FILE"
@@ -154,6 +169,7 @@ jobs:
         id: list_srs
         shell: bash
         run: |
+          # 根据 JSON 列表推导对应的 .srs 文件列表，并统计数量
           set -euo pipefail
 
           JSON_LIST_FILE="${{ steps.diff_json.outputs.json_list_file }}"
@@ -166,13 +182,14 @@ jobs:
           fi
 
           SRS_LIST_FILE="srs_list.txt"
-          : > "$SRS_LIST_FILE"
+          : > "$SRS_LIST_FILE"  # 清空/创建 .srs 列表
 
           echo "Listing compiled .srs files corresponding to JSON list..."
           while IFS= read -r jsonFile; do
             [[ -z "$jsonFile" ]] && continue
             srsFile="${jsonFile%.json}.srs"
             if [[ -f "$srsFile" ]]; then
+              # 只把真实存在的 .srs 文件写入列表
               echo "$srsFile" | tee -a "$SRS_LIST_FILE"
             else
               echo "Note: expected srs not found for $jsonFile -> $srsFile" >&2
@@ -194,35 +211,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # 提交生成的 .srs 文件，并打上 auto 标签推送回 main
           set -euo pipefail
 
-          # Configure git identity for the workflow
+          # 配置工作流提交使用的身份
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage only the compiled .srs files listed by previous step to avoid pathspec errors
-          SRS_LIST_FILE="${{ steps.list_srs.outputs.srs_list_file }}"
-          if [[ -n "${SRS_LIST_FILE}" && -f "${SRS_LIST_FILE}" && -s "${SRS_LIST_FILE}" ]]; then
-            echo "Staging files from $SRS_LIST_FILE:"
-            cat "$SRS_LIST_FILE" || true
-            # Use pathspec-from-file to add exact files
-            git add --pathspec-from-file="$SRS_LIST_FILE" --
-          else
-            echo "No .srs files to stage."
-          fi
-
-          # If no changes, exit quietly
-          if git diff --cached --quiet; then
-            echo "No .srs changes to commit; skipping commit and tag."
-            exit 0
-          fi
-
-          # Commit with fixed message
-          git commit -m "auto workflows compile"
-
-          # Create/force-lightweight tag 'auto' on this commit
-          git tag -f "auto"
-
-          # Push commit and tag back to origin main
-          git push origin "${DEFAULT_BRANCH}"
-          git push origin "auto" --force
+          # 仅根据上一
