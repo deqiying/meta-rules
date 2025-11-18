@@ -10,6 +10,7 @@ jobs:
     name: Compile changed JSON rule-sets
     runs-on: ubuntu-latest
     env:
+      # sing-box 可执行文件路径（在仓库 bin 目录下）
       SING_BOX: ./bin/sing-box
       DEFAULT_BRANCH: main
 
@@ -27,14 +28,6 @@ jobs:
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             echo "This is a tag push; skipping workflow as per requirement.";
             exit 0;
-          fi
-
-      - name: Check sing-box binary exists
-        run: |
-          if [[ ! -x "$SING_BOX" ]]; then
-            echo "sing-box binary not found or not executable at: $SING_BOX";
-            ls -R
-            exit 1
           fi
 
       - name: Compute changed JSON files since last tag
