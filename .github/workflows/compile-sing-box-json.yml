@@ -236,10 +236,10 @@ jobs:
           fi
 
           # 有变化时，提交 .srs 文件，提交信息固定为 auto workflows compile
-          git commit -m "auto workflows compile"
+          git commit -m "workflows auto compile"
 
           # 创建/强制更新名为 auto 的 lightweight tag，指向当前提交
-          git tag -f "auto"
+          git tag -f "workflows auto"
 
           # 将提交推送到默认分支（main），并强制推送 auto 标签
           git push origin "${DEFAULT_BRANCH}"
