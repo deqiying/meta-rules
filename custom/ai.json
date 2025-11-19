@@ -21,7 +21,10 @@
         "platform.openai.com",
         "proactivebackend-pa.googleapis.com",
         "robinfrontend-pa.googleapis.com",
-        "webchannel-alkalimakersuite-pa.clients6.google.com"
+        "webchannel-alkalimakersuite-pa.clients6.google.com",
+        "optimizationguide-pa.googleapis.com",
+        "jnn-pa.googleapis.com",
+        "waa-pa.clients6.google.com"
       ],
       "domain_suffix": [
         ".aistudio.google.com",
