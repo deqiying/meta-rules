@@ -3,25 +3,57 @@
   "rules": [
     {
       "domain": [
-        "aip.baidubce.com",
-        "qianfan.baidubce.com",
-        "dashscope.aliyuncs.com",
+        "aigc.baidu.com",
+        "api.chatglm.cn",
+        "api.moonshot.cn",
+        "api.zhipuai.cn",
+        "ark.cn-beijing.volces.com",
+        "chatglm.cn",
+        "dashscope.aliyun.com",
+        "glm.chat",
         "hunyuan.tencentcloudapi.com",
-        "spark-api.xf-yun.com",
-        "spark-api-open.xf-yun.com",
+        "kimi moonshot.cn",
         "open.bigmodel.cn",
-        "api.baichuan-ai.com",
-        "api.moonshot.cn"
+        "open.volcengineai.com",
+        "platform.moonshot.cn",
+        "qianfan.baidu.com",
+        "spark-api.xf-yun.com",
+        "spark-api.cn",
+        "tongyi.aliyun.com"
       ],
       "domain_suffix": [
-        ".yiyan.baidu.com",
-        ".wenxin.baidu.com",
-        ".qianfan.baidubce.com",
-        ".dashscope.aliyuncs.com",
-        ".xf-yun.com",
-        ".bigmodel.cn",
-        ".baichuan-ai.com",
-        ".moonshot.cn"
+        "bailian.aliyun.com",
+        "baichuan-api.cn",
+        "bigmodel.cn",
+        "chat.deepseek.com",
+        "chatglm.cn",
+        "coze.cn",
+        "coze.com",
+        "dashscope.aliyun.com",
+        "deepseek.com",
+        "doubao.com",
+        "glm.chat",
+        "hunyuan.tencent.com",
+        "kimi.ai",
+        "minimax.chat",
+        "modelbest.cn",
+        "moonshot.cn",
+        "qwen.ai",
+        "sensecore.cn",
+        "sensenova.cn",
+        "stepfun.com",
+        "tongyi.aliyun.com",
+        "volcengineai.com",
+        "wenxin.baidu.com",
+        "yiyan.baidu.com",
+        "yi.tech",
+        "zhipuai.cn"
+      ],
+      "domain_keyword": [
+        "coze.cn/bot",
+        "coze.cn/open",
+        "coze.com/bot",
+        "coze.com/open"
       ]
     }
   ]
