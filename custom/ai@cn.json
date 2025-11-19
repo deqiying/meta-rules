@@ -12,13 +12,12 @@
         "dashscope.aliyun.com",
         "glm.chat",
         "hunyuan.tencentcloudapi.com",
-        "kimi moonshot.cn",
         "open.bigmodel.cn",
         "open.volcengineai.com",
         "platform.moonshot.cn",
         "qianfan.baidu.com",
-        "spark-api.xf-yun.com",
         "spark-api.cn",
+        "spark-api.xf-yun.com",
         "tongyi.aliyun.com"
       ],
       "domain_suffix": [
@@ -48,12 +47,6 @@
         "yiyan.baidu.com",
         "yi.tech",
         "zhipuai.cn"
-      ],
-      "domain_keyword": [
-        "coze.cn/bot",
-        "coze.cn/open",
-        "coze.com/bot",
-        "coze.com/open"
       ]
     }
   ]
