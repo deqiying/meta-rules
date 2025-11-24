@@ -103,30 +103,25 @@
         "generativelanguage.googleapis.com"
       ],
       "domain_keyword": [
-        "gemini.google",
-        "generativeai.google",
-        "deepmind.google",
-        "deepmind.com",
-        "generativelanguage.googleapis.com",
-        "aistudio.google.com",
-        "makersuite.google.com",
-        "vertexai.googleapis.com",
-        "chromeai.googleplex.com",
-        "chromeaiexperiments.googleplex.com",
-        "notebooklm.google.com",
-        "jules.google.com",
-        "clients6.google.com",
-        "ogs.google.com",
-        "ai.googleapis.com",
-        "gemini.googleapis.com",
-        "generative.googleapis.com",
-        "vertex.googleapis.com",
-        "developers.google.com"
+        "ai.jetbrains.com",
+        "chrome.com/ai",
+        "jb.ai",
+        "sora.openai",
+        "gemini",
+        "generativelanguage",
+        "vertexai",
+        "aistudio",
+        "makersuite",
+        "chromeai",
+        "proactivebackend",
+        "optimizationguide"
       ],
-      "url_regex": [
-        "^https?://[^/]+\\.google\\.[^/]+/.*(generative|ai|gemini|vertex).*",
-        "^https?://.*\\.googleapis\\.com/.*(ai|gemini|generative|vertex).*",
-        "^https?://developers\\.google\\.com/.*(gemini|ai|vertex).*"
+      "domain_regex": [
+        "(ai|gemini|generative|vertex).*googleapis\\.com$",
+        "gemini\\.google\\.[a-z]+$",
+        "generativeai\\.google$",
+        "vertexai\\.googleapis\\.com$",
+        "developers\\.google\\.com$"
       ]
     }
   ]
