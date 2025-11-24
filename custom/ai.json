@@ -44,7 +44,6 @@
         "accounts.google.com",
         "myaccount.google.com"
       ],
-
       "domain_suffix": [
         "aistudio.google.com",
         "anthropic.com",
@@ -103,23 +102,31 @@
         "jules.google",
         "generativelanguage.googleapis.com"
       ],
-
-      "domain_regex": [
-        "^(.+\\.)?gemini\\.google\\..+$",
-        "^(.+\\.)?generativeai\\.google$",
-        "^(.+\\.)?deepmind\\.google$",
-        "^(.+\\.)?deepmind\\.com$",
-        "^(.+\\.)?generativelanguage\\.googleapis\\.com$",
-        "^(.+\\.)?aistudio\\.google\\.com$",
-        "^(.+\\.)?makersuite\\.google\\.com$",
-        "^(.+\\.)?vertexai\\.googleapis\\.com$",
-        "^(.+\\.)?chromeai\\.googleplex\\.com$",
-        "^(.+\\.)?chromeaiexperiments\\.googleplex\\.com$",
-        "^(.+\\.)?notebooklm\\.google\\.com$",
-        "^(.+\\.)?jules\\.google\\.com$",
-        "googleapis\\.com.*(/|%2F)(ai|gemini|generative|vertex)",
-        "google\\.[^/]+/.*(ai|gemini|generative|vertex)",
-        "developers\\.google\\.com/.*(gemini|ai|vertex)"
+      "domain_keyword": [
+        "gemini.google",
+        "generativeai.google",
+        "deepmind.google",
+        "deepmind.com",
+        "generativelanguage.googleapis.com",
+        "aistudio.google.com",
+        "makersuite.google.com",
+        "vertexai.googleapis.com",
+        "chromeai.googleplex.com",
+        "chromeaiexperiments.googleplex.com",
+        "notebooklm.google.com",
+        "jules.google.com",
+        "clients6.google.com",
+        "ogs.google.com",
+        "ai.googleapis.com",
+        "gemini.googleapis.com",
+        "generative.googleapis.com",
+        "vertex.googleapis.com",
+        "developers.google.com"
+      ],
+      "url_regex": [
+        "^https?://[^/]+\\.google\\.[^/]+/.*(generative|ai|gemini|vertex).*",
+        "^https?://.*\\.googleapis\\.com/.*(ai|gemini|generative|vertex).*",
+        "^https?://developers\\.google\\.com/.*(gemini|ai|vertex).*"
       ]
     }
   ]
