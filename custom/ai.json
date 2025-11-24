@@ -18,17 +18,33 @@
         "chromeaiexperiments.googleplex.com",
         "claude.ai",
         "console.anthropic.com",
+        "dl.google.com",
+        "firebase.googleapis.com",
+        "firebaseappcheck.googleapis.com",
         "geller-pa.googleapis.com",
         "generativelanguage.googleapis.com",
         "jnn-pa.googleapis.com",
+        "location.googleapis.com",
         "optimizationguide-pa.googleapis.com",
         "platform.openai.com",
         "proactivebackend-pa.googleapis.com",
+        "redirector.gvt1.com",
         "robinfrontend-pa.googleapis.com",
         "sora.com",
+        "vertexai.googleapis.com",
         "waa-pa.clients6.google.com",
-        "webchannel-alkalimakersuite-pa.clients6.google.com"
+        "webchannel-alkalimakersuite-pa.clients6.google.com",
+        "gemini.google.com",
+        "gemini.com",
+        "aistudio.google.com",
+        "makersuite.google.com",
+        "notebooklm.google.com",
+        "bard.google.com",
+        "content-developerprofiles-pa.googleapis.com",
+        "accounts.google.com",
+        "myaccount.google.com"
       ],
+
       "domain_suffix": [
         "aistudio.google.com",
         "anthropic.com",
@@ -81,13 +97,29 @@
         "stability.ai",
         "together.ai",
         "veo.google",
-        "x.ai"
+        "x.ai",
+        "notebooklm.google",
+        "vertexai.googleapis.com",
+        "jules.google",
+        "generativelanguage.googleapis.com"
       ],
-      "domain_keyword": [
-        "ai.jetbrains.com",
-        "chrome.com/ai",
-        "jb.ai",
-        "sora.openai"
+
+      "domain_regex": [
+        "^(.+\\.)?gemini\\.google\\..+$",
+        "^(.+\\.)?generativeai\\.google$",
+        "^(.+\\.)?deepmind\\.google$",
+        "^(.+\\.)?deepmind\\.com$",
+        "^(.+\\.)?generativelanguage\\.googleapis\\.com$",
+        "^(.+\\.)?aistudio\\.google\\.com$",
+        "^(.+\\.)?makersuite\\.google\\.com$",
+        "^(.+\\.)?vertexai\\.googleapis\\.com$",
+        "^(.+\\.)?chromeai\\.googleplex\\.com$",
+        "^(.+\\.)?chromeaiexperiments\\.googleplex\\.com$",
+        "^(.+\\.)?notebooklm\\.google\\.com$",
+        "^(.+\\.)?jules\\.google\\.com$",
+        "googleapis\\.com.*(/|%2F)(ai|gemini|generative|vertex)",
+        "google\\.[^/]+/.*(ai|gemini|generative|vertex)",
+        "developers\\.google\\.com/.*(gemini|ai|vertex)"
       ]
     }
   ]
