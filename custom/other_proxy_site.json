@@ -44,6 +44,7 @@
         "agkn.com",
         "cohere.com",
         "crashlytics.com",
+        "digicert.com",
         "flaticon.com",
         "inmobi.com",
         "ipapi.is",
@@ -53,6 +54,7 @@
         "kochava.com",
         "mobilefuse.com",
         "nodejs.org",
+        "noembed.com",
         "openstreetmap.org",
         "openupm.com",
         "proxmox.com",
@@ -63,7 +65,6 @@
         "tktn.at",
         "tktn.be",
         "talkatone.domain.separator",
-        "digicert.com",
         "ssl.domain.separator"
       ],
       "domain_keyword": [
