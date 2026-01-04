@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "cfcdn.longemby.com",
+        "emby.sakiko.de",
+        "emby-sharon.sakiko.de",
+        "short.longemby.com"
+      ]
+    }
+  ]
+}
