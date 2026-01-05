@@ -3,7 +3,8 @@
   "rules": [
     {
       "domain_suffix": [
-        "hkcdn.longemby.com"
+        "hkcdn.longemby.com",
+        "embyty.entertang.work"
       ]
     }
   ]
