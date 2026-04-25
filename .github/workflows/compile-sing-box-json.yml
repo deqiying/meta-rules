@@ -61,11 +61,22 @@ jobs:
             exit 1
           fi
 
+      - name: Sync geo JSON rule-sets from upstream
+        shell: bash
+        env:
+          UPSTREAM_REPO: https://github.com/MetaCubeX/meta-rules-dat.git
+          UPSTREAM_BRANCH: sing
+          TARGET_DIR: geo
+        run: |
+          # 在编译 .srs 前先同步 geo 下已存在的 JSON 规则集
+          set -euo pipefail
+          bash scripts/sync-geo-json.sh
+
       - name: Compute changed JSON files since last tag
         id: diff_json
         shell: bash
         run: |
-          # 计算自上一次 tag 以来发生变化的 JSON 文件列表
+          # 计算自上一次 tag 以来发生变化的 JSON 文件，并合并同步脚本造成的工作区 JSON 变更
           set -euo pipefail
 
           # 拉取最新标签，确保本地包含所有 tag 信息
@@ -73,6 +84,10 @@ jobs:
 
           JSON_LIST_FILE="json_list.txt"
           : > "$JSON_LIST_FILE"  # 清空/创建 JSON 列表文件
+          COMMITTED_JSON_LIST_FILE="committed_json_list.txt"
+          WORKTREE_JSON_LIST_FILE="worktree_json_list.txt"
+          : > "$COMMITTED_JSON_LIST_FILE"
+          : > "$WORKTREE_JSON_LIST_FILE"
 
           echo "Finding latest tag (if any)..."
           if git describe --tags --abbrev=0 --match '*' >/dev/null 2>&1; then
@@ -120,11 +135,20 @@ jobs:
             git diff --name-only "$RANGE" \
               | grep '\.json$' \
               | sort -u \
-              > "$JSON_LIST_FILE" || true
+              > "$COMMITTED_JSON_LIST_FILE" || true
           else
             # 没有有效范围（例如第一次 push），则认为所有已跟踪 JSON 都是“变更”
-            git ls-files '*.json' | sort -u > "$JSON_LIST_FILE" || true
+            git ls-files '*.json' | sort -u > "$COMMITTED_JSON_LIST_FILE" || true
           fi
+
+          # 同步脚本会直接修改工作区；这些 JSON 还未进入提交历史，必须加入编译列表
+          git diff --name-only -- ':(glob)**/*.json' \
+            | sort -u \
+            > "$WORKTREE_JSON_LIST_FILE" || true
+
+          cat "$COMMITTED_JSON_LIST_FILE" "$WORKTREE_JSON_LIST_FILE" \
+            | sort -u \
+            > "$JSON_LIST_FILE"
 
           echo "Changed JSON files:";
           cat "$JSON_LIST_FILE" || echo "<none>"
@@ -205,18 +229,39 @@ jobs:
           echo "srs_count=$count" >> "$GITHUB_OUTPUT"
           echo "srs_list_file=$SRS_LIST_FILE" >> "$GITHUB_OUTPUT"
 
-      - name: Commit and tag generated srs files
+      - name: Commit and tag synced JSON and generated srs files
         if: success()
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 提交生成的 .srs 文件，并打上 auto 标签推送回 main
+          # 提交同步后的 JSON 和生成的 .srs 文件，并打上 auto 标签推送回 main
           set -euo pipefail
 
           # 配置工作流提交使用的身份（GitHub Actions 机器人账号）
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 先暂存仍然存在的 JSON 文件；删除或重命名的历史 JSON 不在这里处理，避免 pathspec 失败
+          JSON_LIST_FILE="${{ steps.diff_json.outputs.json_list_file }}"
+          JSON_STAGE_FILE="json_stage.txt"
+          : > "$JSON_STAGE_FILE"
+          if [[ -n "${JSON_LIST_FILE}" && -f "${JSON_LIST_FILE}" && -s "${JSON_LIST_FILE}" ]]; then
+            while IFS= read -r jsonFile; do
+              [[ -z "$jsonFile" ]] && continue
+              if [[ -f "$jsonFile" ]]; then
+                echo "$jsonFile" >> "$JSON_STAGE_FILE"
+              fi
+            done < "$JSON_LIST_FILE"
+          fi
+
+          if [[ -s "$JSON_STAGE_FILE" ]]; then
+            echo "Staging JSON files from $JSON_STAGE_FILE:"
+            cat "$JSON_STAGE_FILE" || true
+            git add --pathspec-from-file="$JSON_STAGE_FILE" --
+          else
+            echo "No JSON files to stage."
+          fi
 
           # 仅根据上一步骤生成的 .srs 列表进行 git add，避免 pathspec 匹配不到时报错
           SRS_LIST_FILE="${{ steps.list_srs.outputs.srs_list_file }}"
@@ -231,12 +276,12 @@ jobs:
 
           # 如果暂存区没有任何变化，则不提交也不打标签，静默退出
           if git diff --cached --quiet; then
-            echo "No .srs changes to commit; skipping commit and tag."
+            echo "No JSON or .srs changes to commit; skipping commit and tag."
             exit 0
           fi
 
-          # 有变化时，提交 .srs 文件，提交信息固定为 auto workflows compile
-          git commit -m "workflows auto compile"
+          # 有变化时，提交同步后的 JSON 和 .srs 文件
+          git commit -m "workflows auto sync and compile"
 
           # 创建/强制更新名为 auto 的 lightweight tag，指向当前提交
           git tag -f "auto"
