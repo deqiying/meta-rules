@@ -1,23 +1,25 @@
 {
-  "version": 3,
+  "version": 2,
   "rules": [
     {
       "domain": [
+        "audio-ak-spotify-com.akamaized.net",
         "audio4-ak-spotify-com.akamaized.net",
         "cdn-spotify-experiments.conductrics.com",
         "heads-ak-spotify-com.akamaized.net",
+        "heads4-ak-spotify-com.akamaized.net",
         "spotify.com.edgesuite.net",
         "spotify.map.fastly.net",
-        "spotify.map.fastlylb.net"
+        "spotify.map.fastlylb.net",
+        "adeventtracker.spotify.com",
+        "adstudio-assets.scdn.co",
+        "bloodhound.spotify.com"
       ],
       "domain_suffix": [
-        "audio-ak-spotify-com.akamaized.net",
         "byspotify.com",
-        "heads4-ak-spotify-com.akamaized.net",
         "pscdn.co",
         "scdn.co",
         "spoti.fi",
-        "spotify-com.akamaized.net",
         "spotify-everywhere.com",
         "spotify.com",
         "spotify.design",
@@ -27,11 +29,9 @@
         "spotifycodes.com",
         "spotifyforbrands.com",
         "spotifyjobs.com",
-        "spotifynewsroom.jp",
-        "spotilocal.com",
+        "spotify.link",
         "tospotify.com"
-      ],
-      "domain_keyword": "spotify"
+      ]
     }
   ]
 }

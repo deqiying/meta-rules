@@ -1,20 +1,24 @@
 {
-  "version": 3,
+  "version": 2,
   "rules": [
     {
       "domain_suffix": [
-        "1drv.com",
-        "livefilestore.com",
-        "oneclient.sfx.ms",
-        "onedrive.com",
-        "onedrive.live.com",
-        "photos.live.com",
-        "sharepoint.com",
+        "onedrive",
+        "onedriveupdater",
         "sharepointonline.com",
-        "skydrive.wns.windows.com",
+        "microsoftpersonalcontent.com",
+        "onedrive.com",
+        "sharepoint.cn",
+        "livefilestore.com",
+        "sharepoint.com",
+        "1drv.com",
+        "storage.msn.com",
         "spoprod-a.akamaihd.net",
         "storage.live.com",
-        "storage.msn.com"
+        "oneclient.sfx.ms",
+        "photos.live.com",
+        "onedrive.live.com",
+        "skydrive.wns.windows.com"
       ],
       "domain_keyword": [
         "1drv",

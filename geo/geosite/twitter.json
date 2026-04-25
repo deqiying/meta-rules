@@ -1,23 +1,21 @@
 {
-  "version": 3,
+  "version": 2,
   "rules": [
     {
       "domain_suffix": [
-        "ads-twitter.com",
+        "twitter.jp",
+        "x.com",
         "cms-twdigitalassets.com",
-        "periscope.tv",
-        "pscp.tv",
         "t.co",
         "tellapart.com",
         "tweetdeck.com",
-        "twimg.co",
         "twimg.com",
-        "twimg.org",
         "twitpic.com",
         "twitter.biz",
-        "twitter.com",
-        "twitter.jp",
         "twittercommunity.com",
+        "pscp.tv",
+        "periscope.tv",
+        "twitter.com",
         "twitterflightschool.com",
         "twitterinc.com",
         "twitteroauth.com",
@@ -27,9 +25,9 @@
         "twttr.net",
         "twvid.com",
         "vine.co",
-        "x.com"
-      ],
-      "domain_keyword": "twitter"
+        "twitter.map.fastly.net",
+        "ads-twitter.com"
+      ]
     }
   ]
 }
