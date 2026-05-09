@@ -14,7 +14,7 @@
 .idea/**/dataSources/
 .idea/**/dataSources.local.xml
 .idea/**/libraries
-
+.idea
 # Optionally ignore whole .idea if you don't want to share IDE config
 # (Uncomment the next line if you prefer that policy.)
 # .idea/
