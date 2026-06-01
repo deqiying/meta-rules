@@ -3,7 +3,8 @@
   "rules": [
     {
       "domain": [
-        "v2ex.com"
+        "v2ex.com",
+        "trans.ors.de5.net"
       ],
       "domain_suffix": [
         "111666.best",
@@ -21,8 +22,9 @@
         "cnfaster.com",
         "cursor.com",
         "dandanplay.net",
-        "dicebear.com",
+        "de5.net",
         "deepflood.com",
+        "dicebear.com",
         "edge.adobedc.net",
         "enzonix.com",
         "facebook.com",
@@ -80,6 +82,7 @@
         "sagernet.org",
         "schemastore.org",
         "simplelogin.io",
+        "sl.al",
         "sonatype.com",
         "split.io",
         "ssl.com",
