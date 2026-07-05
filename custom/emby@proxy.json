@@ -2,10 +2,14 @@
   "version": 3,
   "rules": [
     {
-      "domain_suffix": [
+      "domain": [
         "cfcdn.longemby.com",
         "stream-phoenix.longemby.live",
-        "emby.sakiko.de",
+        "emby.sakiko.de"
+      ],
+      "domain_suffix": [
+        "longemby.live",
+        "sakiko.de",
         "emby-sharon.sakiko.de",
         "short.longemby.com"
       ]
