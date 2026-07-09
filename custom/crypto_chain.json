@@ -5,6 +5,7 @@
       "domain": [
         "api.hyperliquid-testnet.xyz",
         "app.hyperliquid-testnet.xyz",
+        "app-measurement.com",
         "bybit-exchange.github.io",
         "bybit.ada.support",
         "d3r7nsslvs6aaf.cloudfront.net",
@@ -22,6 +23,8 @@
         "aicoin.com",
         "aimoon.com",
         "amplitudeexperiment.com",
+        "amazon.com",
+        "amazonaws.com",
         "appsflayer.com",
         "appsflyer.com",
         "arbiscan.io",
@@ -255,6 +258,17 @@
         "zb.com",
         "zb.io",
         "zb.live"
+      ]
+    },
+    {
+      "ip_cidr": [
+        "13.32.121.6/32",
+        "3.160.150.37/32",
+        "13.33.187.108/32",
+        "43.133.241.84/32",
+        "43.133.238.145/32",
+        "150.109.230.182/32",
+        "142.251.215.234/32"
       ]
     }
   ]
