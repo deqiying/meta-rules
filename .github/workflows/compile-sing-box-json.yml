@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # 仅在 main 分支有 push 时触发
+  workflow_dispatch: {}  # 支持手动触发
+  schedule:
+    - cron: '30 0 * * *'  # 每天 UTC 00:30（新加坡时间 08:30）
 
 permissions:
   contents: write  # 允许工作流向仓库推送提交和标签
@@ -24,11 +27,11 @@ jobs:
         with:
           fetch-depth: 0  # 拉取完整历史（包括 tag），便于做 diff 和查找标签
 
-      - name: Ensure this is a plain push (no tag)
-        # 确保当前触发是普通分支 push，而不是 tag push；如果是 tag push 则直接退出
+      - name: Ensure this is not a tag push
+        # 手动触发和定时触发也允许执行；仅跳过 tag push
         run: |
           # GitHub 将分支 push 设置为 refs/heads/*，tag push 为 refs/tags/*
-          # 我们只在分支 push 时执行工作流
+          # workflow_dispatch 和 schedule 也允许继续执行
           echo "GITHUB_REF=$GITHUB_REF"
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             echo "This is a tag push; skipping workflow as per requirement.";
