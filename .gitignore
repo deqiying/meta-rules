@@ -107,5 +107,8 @@ log/
 *.temp
 /tmp/
 .fastRequest
-.idea
+.idea/
 
+meta-rules-dat/
+
+/meta-rules-dat/
